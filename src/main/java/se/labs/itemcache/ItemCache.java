@@ -12,7 +12,7 @@ public interface ItemCache<T> {
 	 * 
 	 * @return The cached item
 	 */
-	T getItem();	
+	T getItem();
 
 	/**
 	 * 

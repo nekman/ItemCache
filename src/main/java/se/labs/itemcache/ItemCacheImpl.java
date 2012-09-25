@@ -15,17 +15,18 @@ public class ItemCacheImpl<T> implements ItemCache<T> {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(ItemCacheImpl.class);
 
+	private final ItemCacheLoader<T> cacheLoader;
+	/**
+	 * Time in ms between each reload
+	 */
+	private final Long timeBetweenReload;
+
 	/**
 	 * When the cache was last updated 
 	 */
 	private Long lastUpdated;
-	/**
-	 * Time in ms between each reload
-	 */
-	private Long timeBetweenReload;
 
-	private T item;	
-	private ItemCacheLoader<T> cacheLoader;
+	private T item;
 
 	/**
 	 * 
@@ -54,17 +55,17 @@ public class ItemCacheImpl<T> implements ItemCache<T> {
 	 * @see ItemCache#getItem() 
 	 */
 	public T getItem() {
-		// Check if a reload of the cache is needed, if so, 
+		// Check if a reload of the cache is needed, if so,
 		// get the item from the cacheloader and update the time stamp.
-		if (isReloadNeeded()) {				
-			synchronized(this) {
-				if (isReloadNeeded()) {	
-					item = cacheLoader.reload();		
+		if (isReloadNeeded()) {
+			synchronized (this) {
+				if (isReloadNeeded()) {
+					item = cacheLoader.reload();
 					lastUpdated = System.currentTimeMillis();
-					
-					logger.info("Cache was reloaded.");		
+
+					logger.info("Cache was reloaded.");
 				}
-			}	
+			}
 		}
 
 		return item;
@@ -78,10 +79,10 @@ public class ItemCacheImpl<T> implements ItemCache<T> {
 			return true;
 		}
 
-		return (System.currentTimeMillis() - lastUpdated) > timeBetweenReload;		
+		return System.currentTimeMillis() - lastUpdated > timeBetweenReload;
 	}
 
 	public void invalidate() {
-		item = null;	
-	}	
+		item = null;
+	}
 }
