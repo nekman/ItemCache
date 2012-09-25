@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 
 import se.labs.itemcache.ItemCache;
-import se.labs.itemcache.ItemCacheImpl;
+import se.labs.itemcache.ItemCacheFactory;
 import se.labs.itemcache.ItemCacheLoader;
 
 public class ItemCacheTest {
@@ -19,7 +19,7 @@ public class ItemCacheTest {
 		ItemCacheLoader<String> loader = mock(ItemCacheLoader.class);
 		when(loader.reload()).thenReturn("1");
 
-		ItemCache<String> stringCache = new ItemCacheImpl<String>(loader, 1);
+		ItemCache<String> stringCache = ItemCacheFactory.create(loader, 1);
 		assertThat(stringCache.getItem(), is("1"));
 
 		// Next time the cache reloads, return "2".
@@ -36,7 +36,7 @@ public class ItemCacheTest {
 		ItemCacheLoader<Integer> loader = mock(ItemCacheLoader.class);
 		when(loader.reload()).thenReturn(1);
 
-		ItemCache<Integer> intCache = new ItemCacheImpl<Integer>(loader);
+		ItemCache<Integer> intCache = ItemCacheFactory.create(loader);
 		assertThat(intCache.getItem(), is(1));
 
 		// Next time the cache reloads, return 2.
